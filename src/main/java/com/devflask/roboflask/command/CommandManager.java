@@ -1,6 +1,9 @@
 package com.devflask.roboflask.command;
 
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -50,17 +53,27 @@ public class CommandManager extends ListenerAdapter {
 
     @Override
     public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event){
-        if(event.getAuthor().isBot()){
-            return;
+        Command command = getValidCommand(event.getAuthor(), event.getMessage());
+        if (command != null) {
+            command.execute(event);
+            LOGGER.debug(command);
         }
-        String[] split = event.getMessage().getContentRaw()
-                .replaceFirst("(?i)" + Pattern.quote(prefix), "")
-                .split("\\s+");
-        if(getCommand(split[0]) != null){
-            getCommand(split[0]).execute(event);
-            LOGGER.debug(split[0]);
-        }
-
     }
 
+    @Override
+    public void onPrivateMessageReceived(@NotNull PrivateMessageReceivedEvent event) {
+        Command command = getValidCommand(event.getAuthor(), event.getMessage());
+        if (command != null) {
+            command.execute(event);
+            LOGGER.debug(command);
+        }
+    }
+
+    public Command getValidCommand(User user, Message message) {
+        if(user.isBot()) return null;
+        String[] split = message.getContentRaw()
+                .replaceFirst("(?i)" + Pattern.quote(prefix), "")
+                .split("\\s+");
+        return getCommand(split[0]);
+    }
 }
