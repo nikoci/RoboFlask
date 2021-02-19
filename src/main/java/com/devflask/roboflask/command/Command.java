@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public interface Command {
@@ -15,6 +16,6 @@ public interface Command {
     void execute(GuildMessageReceivedEvent event);
 
     default Set<Permission> getRequiredPermissions() {
-        return null;
+        return new HashSet<>();
     }
 }
