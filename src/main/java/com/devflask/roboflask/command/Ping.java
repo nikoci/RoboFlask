@@ -39,7 +39,7 @@ public class Ping implements Command{
     @Override
     public void execute(PrivateMessageReceivedEvent event) {
         event.getChannel().sendMessage("pong!").queue();
-        LOGGER.debug("PONG in privatechannel with id: "+event.getChannel().getId());
+        LOGGER.debug("PONG in private channel with id: "+event.getChannel().getId());
     }
 
     @Override
