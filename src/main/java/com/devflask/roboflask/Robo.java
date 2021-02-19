@@ -13,20 +13,16 @@ public class Robo  {
     //Way into the program
     public static void main(String[] args) {
         try {
-            Robo robo = new Robo();
-        } catch (LoginException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+            // TODO: BotInstance bot = new Robo();
+            Robo robo = new Robo(args[0]); //Token is set by args for now
+
+        } catch (LoginException | InterruptedException e) {
             e.printStackTrace();
         }
-        LOGGER.info("hello world");
-        LOGGER.debug("hello world - the debug");
-        LOGGER.warn("hello world - the warning?");
-        LOGGER.error("hello w0rld - the err0r");
     }
 
-    public Robo() throws LoginException, InterruptedException {
-        bot = new Bot();
+    public Robo(String arg) throws LoginException, InterruptedException {
+        bot = new Bot(arg);
     }
 
 }
