@@ -1,5 +1,6 @@
 package com.devflask.roboflask;
 
+import com.devflask.roboflask.command.BotInfo;
 import com.devflask.roboflask.command.Command;
 import com.devflask.roboflask.command.CommandManager;
 import com.devflask.roboflask.command.Ping;
@@ -25,6 +26,7 @@ public class Bot {
 
         initJDA();
         registerCommands(new Ping());
+        registerCommands(new BotInfo());
     }
 
     //TODO: implement a login system and env token.
@@ -34,7 +36,6 @@ public class Bot {
     }
 
     private JDABuilder setupJDA(){
-        //builder = JDABuilder.createDefault(System.getenv("ROBO_TOKEN"));
         builder = JDABuilder.createDefault(token);
         Collection<GatewayIntent> intentsDisallowed = new HashSet<>();
         //builder.setDisabledIntents(intentsDisallowed);
@@ -48,7 +49,7 @@ public class Bot {
     }
 
     private void registerCommands(Command command){
-        commandManager.addCommand(new Ping());
+        commandManager.addCommand(command);
     }
 
 
