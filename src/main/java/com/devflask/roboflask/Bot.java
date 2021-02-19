@@ -36,7 +36,7 @@ public class Bot {
     private JDABuilder setupJDA(){
         //builder = JDABuilder.createDefault(System.getenv("ROBO_TOKEN"));
         builder = JDABuilder.createDefault(token);
-        Collection<GatewayIntent> intentsDisallowed = new HashSet<GatewayIntent>();
+        Collection<GatewayIntent> intentsDisallowed = new HashSet<>();
         //builder.setDisabledIntents(intentsDisallowed);
         builder.setActivity(Activity.watching("my creation"));
         builder.addEventListeners(commandManager);
