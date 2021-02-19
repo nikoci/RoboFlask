@@ -27,14 +27,13 @@ public class CommandManager extends ListenerAdapter {
 
     public void addCommand(Command command){
         commands.add(command);
-        LOGGER.info("yes");
+        LOGGER.info(command);
     }
 
     public void removeCommand(String commandName){
         commands.forEach((command) -> {
             if(command.getName().equalsIgnoreCase(commandName)){
                 commands.remove(command);
-                return;
             }
         });
     }
@@ -46,6 +45,7 @@ public class CommandManager extends ListenerAdapter {
     private Command getCommand(String name){
         name = name.toLowerCase();
         for (Command commandX : commands) {
+            LOGGER.debug(commandX.getName() + " " + name);
             if(commandX.getName().equalsIgnoreCase(name)) return commandX;
             if(commandX.getAlias().contains(name)) return commandX;
         }
@@ -56,7 +56,7 @@ public class CommandManager extends ListenerAdapter {
     public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event){
         Command command = getValidCommand(event.getAuthor(), event.getMessage());
         if(command == null) return;
-        if(!(event.getMember().hasPermission(command.getRequiredPermissions()))){
+        if(!(Objects.requireNonNull(event.getMember()).hasPermission(command.getRequiredPermissions()))){
             event.getChannel().sendMessage(
                     MessageUtil.getNoPermissionEmbed(command.getRequiredPermissions(),
                             event.getAuthor().getName(),

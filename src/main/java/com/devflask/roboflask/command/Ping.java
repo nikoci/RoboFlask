@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Ping implements Command{
+public class Ping implements Command {
 
     private static final Logger LOGGER = LogManager.getLogger(Ping.class);
 
@@ -33,17 +33,13 @@ public class Ping implements Command{
     @Override
     public void execute(GuildMessageReceivedEvent event) {
         event.getChannel().sendMessage("pong!").queue();
-        LOGGER.debug("PONG in guild channel with id: "+event.getChannel().getId());
+        LOGGER.debug("PONG in guild channel with id: " + event.getChannel().getId());
     }
 
     @Override
     public void execute(PrivateMessageReceivedEvent event) {
         event.getChannel().sendMessage("pong!").queue();
-        LOGGER.debug("PONG in private channel with id: "+event.getChannel().getId());
+        LOGGER.debug("PONG in private channel with id: " + event.getChannel().getId());
     }
 
-    @Override
-    public Set<Permission> getRequiredPermissions() {
-        return null;
-    }
 }
