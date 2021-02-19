@@ -17,8 +17,12 @@ public class Bot {
     private JDA bot;
     private JDABuilder builder;
     private CommandManager commandManager = new CommandManager();
+    private String token;
 
-    public Bot() throws LoginException, InterruptedException {
+    public Bot(String token) throws LoginException, InterruptedException {
+        //TODO: find a better solution than passing arg to bot constructor as token.
+        this.token = token;
+
         initJDA();
         registerCommands(new Ping());
     }
@@ -31,7 +35,7 @@ public class Bot {
 
     private JDABuilder setupJDA(){
         //builder = JDABuilder.createDefault(System.getenv("ROBO_TOKEN"));
-        builder = JDABuilder.createDefault("ODEwNTcyMDEzNTcxNTM4OTY0.YClmAw.dUDNmCV0Yj8Zq_V5T-_O-2yovmA");
+        builder = JDABuilder.createDefault(token);
         Collection<GatewayIntent> intentsDisallowed = new HashSet<GatewayIntent>();
         //builder.setDisabledIntents(intentsDisallowed);
         builder.setActivity(Activity.watching("my creation"));
