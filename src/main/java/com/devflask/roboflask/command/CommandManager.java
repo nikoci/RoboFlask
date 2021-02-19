@@ -1,5 +1,6 @@
 package com.devflask.roboflask.command;
 
+import com.devflask.roboflask.util.MessageUtil;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -54,10 +55,17 @@ public class CommandManager extends ListenerAdapter {
     @Override
     public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event){
         Command command = getValidCommand(event.getAuthor(), event.getMessage());
-        if (command != null) {
-            command.execute(event);
-            LOGGER.debug(command);
+        if(command == null) return;
+        if(!(event.getMember().hasPermission(command.getRequiredPermissions()))){
+            event.getChannel().sendMessage(
+                    MessageUtil.getNoPermissionEmbed(command.getRequiredPermissions(),
+                            event.getAuthor().getName(),
+                            event.getAuthor().getAvatarUrl()).build()
+            ).queue();
+            return;
         }
+        command.execute(event);
+        LOGGER.debug(command);
     }
 
     @Override
