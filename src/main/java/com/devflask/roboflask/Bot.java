@@ -18,28 +18,23 @@ public class Bot {
     private JDA bot;
     private JDABuilder builder;
     private CommandManager commandManager = new CommandManager();
-    private String token;
 
-    public Bot(String token) throws LoginException, InterruptedException {
-        //TODO: find a better solution than passing arg to bot constructor as token.
-        this.token = token;
-
+    public Bot() throws LoginException, InterruptedException {
         initJDA();
         registerCommands(new Ping());
         registerCommands(new BotInfo());
     }
-
-    //TODO: implement a login system and env token.
+    
     private void initJDA() throws LoginException, InterruptedException {
         bot = setupJDA().build();
         bot.awaitReady();
     }
 
     private JDABuilder setupJDA(){
-        builder = JDABuilder.createDefault(token);
+        builder = JDABuilder.createDefault(System.getenv("RoboflaskToken"));
         Collection<GatewayIntent> intentsDisallowed = new HashSet<>();
         //builder.setDisabledIntents(intentsDisallowed);
-        builder.setActivity(Activity.watching("my creation"));
+        builder.setActivity(Activity.watching("running on cd"));
         builder.addEventListeners(commandManager);
         return builder;
     }
