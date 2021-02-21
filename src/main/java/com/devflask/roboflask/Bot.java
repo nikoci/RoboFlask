@@ -4,6 +4,7 @@ import com.devflask.roboflask.command.BotInfo;
 import com.devflask.roboflask.command.Command;
 import com.devflask.roboflask.command.CommandManager;
 import com.devflask.roboflask.command.Ping;
+import com.devflask.roboflask.command.moderation.Kick;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -27,6 +28,7 @@ public class Bot {
         initJDA();
         registerCommands(new Ping());
         registerCommands(new BotInfo());
+        registerCommands(new Kick());
     }
 
     //TODO: implement a login system and env token.

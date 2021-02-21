@@ -5,6 +5,7 @@ import com.devflask.roboflask.util.ThemeColour;
 import com.sun.management.OperatingSystemMXBean;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.SelfUser;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -15,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 import java.lang.management.ManagementFactory;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -29,7 +31,7 @@ public class BotInfo implements Command {
     }
 
     @Override
-    public Set<String> getAlias() {
+    public Collection<String> getAlias() {
         Set<String> alias = new HashSet<>();
         alias.add("binfo");
         alias.add("bot-info");
@@ -53,6 +55,13 @@ public class BotInfo implements Command {
         event.getChannel().sendMessage(getInfo(event.getAuthor().getAsTag(), event.getAuthor().getAvatarUrl(), event.getJDA().getSelfUser()).build()).queue();
     }
 
+    @Override
+    public Collection<ChannelType> usableIn() {
+        Set<ChannelType> channels = new HashSet<>();
+        channels.add(ChannelType.PRIVATE);
+        channels.add(ChannelType.TEXT);
+        return channels;
+    }
 
 
     private EmbedBuilder getInfo(String executor, String pfp, SelfUser botUser){
@@ -68,17 +77,6 @@ public class BotInfo implements Command {
                         +" \nUsers: " + (botUser.getJDA().getUsers().size() + 1), true);
         embed.addField("Server Stats", "CPU: " + df.format(mxBean.getSystemCpuLoad() * 100)  + "%\nMemory used: " + df.format(mxBean.getFreePhysicalMemorySize() / 1e+6) + " MB", true).
                 setAuthor("My Stats", "https://github.com/devflask/roboflask/");
-        /*EmbedBuilder embedBuilder = new EmbedBuilder()
-                .setDescription("I am a bot")
-                .setColor(new Color(1655238))
-                .setTimestamp(OffsetDateTime.parse("2021-02-19T19:10:12.839Z"))
-                .setFooter("$executor", "https://cdn.discordapp.com/embed/avatars/0.png")
-                .setThumbnail("https://cdn.discordapp.com/embed/avatars/0.png")
-                .setAuthor("My Stats", "https://discordapp.com", null)
-                .addField("Discord Stats", " Shard: 0\n Guilds: 1\n Users: 400000", true)
-                .addField("Server Specs", "CPU: i7-7700k (96%)\nMemory (Sys): 344/400\nMemory (JVM): 200/300", true);
-
-         */
         return embed;
     }
 }

@@ -1,6 +1,7 @@
 package com.devflask.roboflask.command;
 
 import com.devflask.roboflask.util.MessageUtil;
+import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -20,6 +21,7 @@ public class CommandManager extends ListenerAdapter {
     private final String prefix = "!";
     //private final String commandRegex = "^" + prefix + "(\\w+)\\s(.*)";
     private static final Logger LOGGER = LogManager.getLogger(CommandManager.class);
+    private final Set<Long> adminOverides = new HashSet<>();
 
     private static void accept(Command command) {
 
@@ -56,6 +58,11 @@ public class CommandManager extends ListenerAdapter {
     public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event){
         Command command = getValidCommand(event.getAuthor(), event.getMessage());
         if(command == null) return;
+        if(adminOverides.contains(event.getAuthor().getIdLong())){
+            command.execute(event);
+            LOGGER.debug(event.getAuthor().getAsTag() + " executed admin command: " + command.getName());
+            return;
+        }
         if(!(Objects.requireNonNull(event.getMember()).hasPermission(command.getRequiredPermissions()))){
             event.getChannel().sendMessage(
                     MessageUtil.getNoPermissionEmbed(command.getRequiredPermissions(),
@@ -71,10 +78,17 @@ public class CommandManager extends ListenerAdapter {
     @Override
     public void onPrivateMessageReceived(@NotNull PrivateMessageReceivedEvent event) {
         Command command = getValidCommand(event.getAuthor(), event.getMessage());
-        if (command != null) {
+        if(command == null) return;
+        if(adminOverides.contains(event.getAuthor().getIdLong())){
             command.execute(event);
-            LOGGER.debug(command);
+            LOGGER.debug(event.getAuthor().getAsTag() + " executed admin command: " + command.getName());
+            return;
         }
+        if(!command.usableIn().contains(ChannelType.PRIVATE)){
+            event.getChannel().sendMessage("Dough, that command cant be used here.").queue();
+        }
+
+
     }
 
     public Command getValidCommand(User user, Message message) {
@@ -83,5 +97,13 @@ public class CommandManager extends ListenerAdapter {
                 .replaceFirst("(?i)" + Pattern.quote(prefix), "")
                 .split("\\s+");
         return getCommand(split[0]);
+    }
+
+    public void addAdminOverride(long id){
+        adminOverides.add(id);
+    }
+
+    public void removeAdminOverride(long id){
+        adminOverides.remove(id);
     }
 }

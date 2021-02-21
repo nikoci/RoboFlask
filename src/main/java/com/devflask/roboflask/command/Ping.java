@@ -1,11 +1,13 @@
 package com.devflask.roboflask.command;
 
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,6 +36,14 @@ public class Ping implements Command {
     public void execute(GuildMessageReceivedEvent event) {
         event.getChannel().sendMessage("pong!").queue();
         LOGGER.debug("PONG in guild channel with id: " + event.getChannel().getId());
+    }
+
+    @Override
+    public Collection<ChannelType> usableIn() {
+        Set<ChannelType> channels = new HashSet<>();
+        channels.add(ChannelType.TEXT);
+        channels.add(ChannelType.PRIVATE);
+        return channels;
     }
 
     @Override
