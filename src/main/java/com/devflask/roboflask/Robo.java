@@ -14,20 +14,14 @@ public class Robo  {
     //Way into the program
     public static void main(String[] args) {
         try {
-            // TODO: BotInstance bot = new Robo();
-            if(args.length == 0){
-                Robo robo = new Robo(System.getenv("TOKEN"));
-            }else {
-                Robo robo = new Robo(args[0]); //Token is set by args for now
-            }
-
+            Robo robo = new Robo();
         } catch (LoginException | InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    public Robo(String arg) throws LoginException, InterruptedException {
-        bot = new Bot(arg);
+    public Robo() throws LoginException, InterruptedException {
+        bot = new Bot();
     }
 
 }
