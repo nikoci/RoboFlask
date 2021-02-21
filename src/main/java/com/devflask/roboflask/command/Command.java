@@ -5,19 +5,29 @@ import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 
+import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 public interface Command {
-
+    @Nonnull
     String getName();
-    Collection<String> getAlias();
-    String getHelp();
+    @Nonnull
+    default Collection<String> getAlias() {
+        return new HashSet<>();
+    }
+    @Nonnull
+    default String getHelp() {
+        return "No help found for this command.";
+    }
+
     void execute(PrivateMessageReceivedEvent event);
     void execute(GuildMessageReceivedEvent event);
+    void execute(CommandInformation info);
+    @Nonnull
     Collection<ChannelType> usableIn();
-
+    @Nonnull
     default Collection<Permission> getRequiredPermissions() {
         return new HashSet<>();
     }

@@ -42,6 +42,11 @@ public class AdminOverride implements Command {
     }
 
     @Override
+    public void execute(CommandInformation info) {
+
+    }
+
+    @Override
     public Collection<ChannelType> usableIn() {
         return null;
     }

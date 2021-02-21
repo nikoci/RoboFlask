@@ -39,6 +39,11 @@ public class Ping implements Command {
     }
 
     @Override
+    public void execute(CommandInformation info) {
+
+    }
+
+    @Override
     public Collection<ChannelType> usableIn() {
         Set<ChannelType> channels = new HashSet<>();
         channels.add(ChannelType.TEXT);

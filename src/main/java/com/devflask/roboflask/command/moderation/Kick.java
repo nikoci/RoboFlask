@@ -1,6 +1,7 @@
 package com.devflask.roboflask.command.moderation;
 
 import com.devflask.roboflask.command.Command;
+import com.devflask.roboflask.command.CommandInformation;
 import com.devflask.roboflask.util.MessageUtil;
 import com.devflask.roboflask.util.ThemeColour;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -37,6 +38,11 @@ public class Kick implements Command {
 
     @Override
     public void execute(GuildMessageReceivedEvent event) {
+        //
+    }
+
+    @Override
+    public void execute(CommandInformation info){
 
     }
 

@@ -56,6 +56,11 @@ public class BotInfo implements Command {
     }
 
     @Override
+    public void execute(CommandInformation info) {
+
+    }
+
+    @Override
     public Collection<ChannelType> usableIn() {
         Set<ChannelType> channels = new HashSet<>();
         channels.add(ChannelType.PRIVATE);

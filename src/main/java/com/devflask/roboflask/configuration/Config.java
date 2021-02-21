@@ -4,7 +4,7 @@ public class Config {
 
     public final String status;
     public final Long[] adminsID;
-    public final String defaultPrefix;
+    public static final String DEFAULT_PREFIX = "!";
     public final Database database;
 
     class Database {
@@ -25,7 +25,6 @@ public class Config {
     public Config(String status, Long[] adminsID, String defaultPrefix, Database database){
         this.status = status;
         this.adminsID = adminsID;
-        this.defaultPrefix = defaultPrefix;
         this.database = database;
     }
 
