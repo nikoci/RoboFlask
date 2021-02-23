@@ -18,6 +18,7 @@ public class Robo  {
         } catch (LoginException | InterruptedException e) {
             e.printStackTrace();
         }
+
     }
 
     public Robo() throws LoginException, InterruptedException {
