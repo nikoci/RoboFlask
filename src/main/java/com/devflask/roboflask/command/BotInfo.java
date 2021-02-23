@@ -4,21 +4,18 @@ import com.devflask.roboflask.util.MessageUtil;
 import com.devflask.roboflask.util.ThemeColour;
 import com.sun.management.OperatingSystemMXBean;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.SelfUser;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.management.ManagementFactory;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 public class BotInfo implements Command {
@@ -26,12 +23,12 @@ public class BotInfo implements Command {
     private final Logger LOGGER = LogManager.getLogger(BotInfo.class);
 
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return "botinfo";
     }
 
     @Override
-    public Collection<String> getAlias() {
+    public @NotNull Collection<String> getAlias() {
         Set<String> alias = new HashSet<>();
         alias.add("binfo");
         alias.add("bot-info");
@@ -41,31 +38,22 @@ public class BotInfo implements Command {
     }
 
     @Override
-    public String getHelp() {
+    public @NotNull String getHelp() {
         return "Retrieves information about the bot.";
     }
 
-    @Override
     public void execute(PrivateMessageReceivedEvent event) {
         event.getChannel().sendMessage(getInfo(event.getAuthor().getAsTag(), event.getAuthor().getAvatarUrl(), event.getJDA().getSelfUser()).build()).queue();
     }
 
-    @Override
     public void execute(GuildMessageReceivedEvent event) {
         event.getChannel().sendMessage(getInfo(event.getAuthor().getAsTag(), event.getAuthor().getAvatarUrl(), event.getJDA().getSelfUser()).build()).queue();
     }
 
     @Override
     public void execute(CommandInformation info) {
-
-    }
-
-    @Override
-    public Collection<ChannelType> usableIn() {
-        Set<ChannelType> channels = new HashSet<>();
-        channels.add(ChannelType.PRIVATE);
-        channels.add(ChannelType.TEXT);
-        return channels;
+        if (info.isGuild()) execute(info.getGuildEvent());
+        else execute(info.getPrivateEvent());
     }
 
 

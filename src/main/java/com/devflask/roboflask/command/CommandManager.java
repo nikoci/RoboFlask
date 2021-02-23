@@ -60,7 +60,7 @@ public class CommandManager extends ListenerAdapter {
         Command command = getValidCommand(event.getAuthor(), event.getMessage());
         if(command == null) return;
         if(adminOverrides.contains(event.getAuthor().getIdLong())){
-            command.execute(event);
+            command.execute(new CommandInformation(event, event.getMessage().getContentRaw()));
             LOGGER.debug(event.getAuthor().getAsTag() + " executed admin command: " + command.getName());
             return;
         }
@@ -72,7 +72,7 @@ public class CommandManager extends ListenerAdapter {
             ).queue();
             return;
         }
-        command.execute(event);
+        command.execute(new CommandInformation(event, event.getMessage().getContentRaw()));
         LOGGER.debug(command);
     }
 
@@ -81,15 +81,11 @@ public class CommandManager extends ListenerAdapter {
         Command command = getValidCommand(event.getAuthor(), event.getMessage());
         if(command == null) return;
         if(adminOverrides.contains(event.getAuthor().getIdLong())){
-            command.execute(event);
+            command.execute(new CommandInformation(event, event.getMessage().getContentRaw()));
             LOGGER.debug(event.getAuthor().getAsTag() + " executed admin command: " + command.getName());
             return;
         }
-        if(!command.usableIn().contains(ChannelType.PRIVATE)){
-            event.getChannel().sendMessage("Dough, that command cant be used here.").queue();
-        }
-        command.execute(event);
-
+        command.execute(new CommandInformation(event, event.getMessage().getContentRaw()));
     }
 
     public Command getValidCommand(User user, Message message) {
