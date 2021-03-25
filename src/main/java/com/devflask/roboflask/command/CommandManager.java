@@ -1,6 +1,8 @@
 package com.devflask.roboflask.command;
 
+import com.devflask.roboflask.configuration.Config;
 import com.devflask.roboflask.util.MessageUtil;
+import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -17,9 +19,10 @@ public class CommandManager extends ListenerAdapter {
 
     private final Set<Command> commands = new HashSet<>();
     //implement this properly somehow. private String prefix = new ConfigManager().getPrefix();
-    private final String prefix = "!";
+    private final String prefix = Config.DEFAULT_PREFIX;
     //private final String commandRegex = "^" + prefix + "(\\w+)\\s(.*)";
     private static final Logger LOGGER = LogManager.getLogger(CommandManager.class);
+    private final Set<Long> adminOverrides = new HashSet<>();
 
     private static void accept(Command command) {
 
@@ -54,34 +57,66 @@ public class CommandManager extends ListenerAdapter {
 
     @Override
     public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event){
+
         Command command = getValidCommand(event.getAuthor(), event.getMessage());
+
         if(command == null) return;
+
+        if(adminOverrides.contains(event.getAuthor().getIdLong())){
+            command.execute(new CommandInformation(event, event.getMessage().getContentRaw()));
+            LOGGER.debug(event.getAuthor().getAsTag() + " executed admin command: " + command.getName());
+            return;
+        }
+
         if(!(Objects.requireNonNull(event.getMember()).hasPermission(command.getRequiredPermissions()))){
             event.getChannel().sendMessage(
-                    MessageUtil.getNoPermissionEmbed(command.getRequiredPermissions(),
+                    MessageUtil.getPermissionError(MessageUtil.Messages.PERMISSION_ERROR_USER, command.getRequiredPermissions(),
                             event.getAuthor().getName(),
                             event.getAuthor().getAvatarUrl()).build()
             ).queue();
             return;
         }
-        command.execute(event);
+
+        if(!(Objects.requireNonNull(event.getGuild().getSelfMember()).hasPermission(command.getRequiredPermissions()))){
+            event.getChannel().sendMessage(
+                    MessageUtil.getPermissionError(MessageUtil.Messages.PERMISSION_ERROR_BOT, command.getRequiredPermissions(),
+                            event.getAuthor().getName(),
+                            event.getAuthor().getAvatarUrl()).build()
+            ).queue();
+            return;
+        }
+        command.execute(new CommandInformation(event, event.getMessage().getContentRaw()));
         LOGGER.debug(command);
     }
 
     @Override
     public void onPrivateMessageReceived(@NotNull PrivateMessageReceivedEvent event) {
         Command command = getValidCommand(event.getAuthor(), event.getMessage());
-        if (command != null) {
-            command.execute(event);
-            LOGGER.debug(command);
+        if(command == null) return;
+        if(adminOverrides.contains(event.getAuthor().getIdLong())){
+            command.execute(new CommandInformation(event, event.getMessage().getContentRaw()));
+            LOGGER.debug(event.getAuthor().getAsTag() + " executed admin command: " + command.getName());
+            return;
         }
+        command.execute(new CommandInformation(event, event.getMessage().getContentRaw()));
     }
 
     public Command getValidCommand(User user, Message message) {
         if(user.isBot()) return null;
+        if(!message.getContentRaw().startsWith(prefix)){
+            return null;
+        }
         String[] split = message.getContentRaw()
                 .replaceFirst("(?i)" + Pattern.quote(prefix), "")
                 .split("\\s+");
         return getCommand(split[0]);
+    }
+
+    public void addAdminOverride(long id){
+        adminOverrides.add(id);
+    }
+
+    public void removeAdminOverride(long id){
+        adminOverrides.remove(id);
     }
 }
