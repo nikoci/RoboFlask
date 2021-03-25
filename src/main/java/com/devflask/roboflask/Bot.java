@@ -18,20 +18,11 @@ public class Bot {
 
     private JDA bot;
     private JDABuilder builder;
-    private CommandManager commandManager;
+    private CommandManager commandManager = new CommandManager();;
     private ConfigManager configManager;
     private String token;
 
     public Bot() throws LoginException, InterruptedException {
-        this.commandManager = new CommandManager();
-        initJDA();
-        registerCommands(new Ping());
-        registerCommands(new BotInfo());
-        registerCommands(new Kick());
-    }
-
-    public Bot(CommandManager commandManager) throws LoginException, InterruptedException {
-        this.commandManager = commandManager;
         initJDA();
         registerCommands(new Ping());
         registerCommands(new BotInfo());
