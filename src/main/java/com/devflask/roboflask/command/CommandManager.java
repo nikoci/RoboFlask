@@ -57,16 +57,29 @@ public class CommandManager extends ListenerAdapter {
 
     @Override
     public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event){
+
         Command command = getValidCommand(event.getAuthor(), event.getMessage());
+
         if(command == null) return;
+
         if(adminOverrides.contains(event.getAuthor().getIdLong())){
             command.execute(new CommandInformation(event, event.getMessage().getContentRaw()));
             LOGGER.debug(event.getAuthor().getAsTag() + " executed admin command: " + command.getName());
             return;
         }
+
         if(!(Objects.requireNonNull(event.getMember()).hasPermission(command.getRequiredPermissions()))){
             event.getChannel().sendMessage(
-                    MessageUtil.getNoPermissionEmbed(command.getRequiredPermissions(),
+                    MessageUtil.getPermissionError(MessageUtil.Messages.PERMISSION_ERROR_USER, command.getRequiredPermissions(),
+                            event.getAuthor().getName(),
+                            event.getAuthor().getAvatarUrl()).build()
+            ).queue();
+            return;
+        }
+
+        if(!(Objects.requireNonNull(event.getGuild().getSelfMember()).hasPermission(command.getRequiredPermissions()))){
+            event.getChannel().sendMessage(
+                    MessageUtil.getPermissionError(MessageUtil.Messages.PERMISSION_ERROR_BOT, command.getRequiredPermissions(),
                             event.getAuthor().getName(),
                             event.getAuthor().getAvatarUrl()).build()
             ).queue();
