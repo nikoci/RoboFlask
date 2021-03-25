@@ -12,19 +12,26 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
 import javax.security.auth.login.LoginException;
-import java.util.Collection;
 import java.util.EnumSet;
-import java.util.HashSet;
 
 public class Bot {
 
     private JDA bot;
     private JDABuilder builder;
-    private CommandManager commandManager = new CommandManager();
+    private CommandManager commandManager;
     private ConfigManager configManager;
     private String token;
 
     public Bot() throws LoginException, InterruptedException {
+        this.commandManager = new CommandManager();
+        initJDA();
+        registerCommands(new Ping());
+        registerCommands(new BotInfo());
+        registerCommands(new Kick());
+    }
+
+    public Bot(CommandManager commandManager) throws LoginException, InterruptedException {
+        this.commandManager = commandManager;
         initJDA();
         registerCommands(new Ping());
         registerCommands(new BotInfo());
