@@ -3,7 +3,7 @@ package com.devflask.roboflask.command.util;
 import com.devflask.roboflask.command.Command;
 import com.devflask.roboflask.command.CommandInformation;
 import com.devflask.roboflask.util.MessageUtil;
-import com.devflask.roboflask.util.ThemeColour;
+import com.devflask.roboflask.util.ThemeColor;
 import com.sun.management.OperatingSystemMXBean;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.SelfUser;
@@ -63,7 +63,7 @@ public class BotInfo implements Command {
         DecimalFormat df = new DecimalFormat("####.##");
         df.setRoundingMode(RoundingMode.DOWN);
         OperatingSystemMXBean mxBean = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
-        EmbedBuilder embed = MessageUtil.getDefaultEmbed(ThemeColour.GREEN, executor,pfp);
+        EmbedBuilder embed = MessageUtil.getDefaultEmbed(ThemeColor.GREEN, executor,pfp);
         embed.setDescription("I am a bot.");
         embed.setThumbnail(botUser.getAvatarUrl());
         embed.addField("Discord Stats",

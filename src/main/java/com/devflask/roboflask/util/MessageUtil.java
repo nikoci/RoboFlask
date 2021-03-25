@@ -3,10 +3,8 @@ package com.devflask.roboflask.util;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 
-import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Set;
 
 public class MessageUtil {
 
@@ -21,12 +19,12 @@ public class MessageUtil {
         for (Permission permission : permissionSet) {
             permissionString.append(permission.getName()).append(", ");
         }
-        return getDefaultEmbed(ThemeColour.RED, executor, pfp)
+        return getDefaultEmbed(ThemeColor.RED, executor, pfp)
                 .addField("Not Allowed.", Messages.NO_PERMISSION.message +"You need `" + permissionString.toString() +  "` to perform this action", false);
     }
 
-    public static EmbedBuilder getDefaultEmbed(ThemeColour colour, String executor, String pfp){
-        return new EmbedBuilder().setColor(colour.colour).setFooter(executor, pfp).setTimestamp(new Date().toInstant());
+    public static EmbedBuilder getDefaultEmbed(ThemeColor color, String executor, String pfp){
+        return new EmbedBuilder().setColor(color.color).setFooter(executor, pfp).setTimestamp(new Date().toInstant());
     }
 
     enum Messages {
