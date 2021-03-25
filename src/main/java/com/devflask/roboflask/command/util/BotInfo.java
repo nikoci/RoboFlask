@@ -70,7 +70,7 @@ public class BotInfo implements Command {
                 "Shard: 1" +
                 "\nGuilds: " + botUser.getJDA().getGuilds().size()
                         +" \nUsers: " + (botUser.getJDA().getUsers().size() + 1), true);
-        embed.addField("Server Stats", "CPU: " + df.format(mxBean.getSystemCpuLoad() * 100)  + "%\nMemory used: " + df.format(mxBean.getFreePhysicalMemorySize() / 1e+6) + " MB", true).
+        embed.addField("Server Stats", "CPU: " + df.format(mxBean.getSystemCpuLoad() * 100)  + "%\nMemory used: " + df.format((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory() )/1e6) + " MB", true).
                 setAuthor("My Stats", "https://github.com/devflask/roboflask/");
         return embed;
     }
