@@ -15,8 +15,10 @@ public class MessageUtil {
         UNKNOWN_ERROR("An unknown error has occurred. Please report this to the developers https://github.com/devflask/roboflask"),
 
         COMMAND_ERROR_USAGE("Wrong usage. Use: "),
+        COMMAND_ERROR_UNBAN("This user is not banned! "),
 
         COMMAND_SUCCESS_BAN(" banned "),
+        COMMAND_SUCCESS_UNBAN(" is unbanned. "),
 
         BLAME_DODO("Dodo is a fucking bitch"),
         BLAME_JOLLY("Jolly you didn't fucking tell us this was here and we wasted our time you cunt"),

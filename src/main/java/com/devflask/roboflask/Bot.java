@@ -1,6 +1,7 @@
 package com.devflask.roboflask;
 
 import com.devflask.roboflask.command.moderation.Ban;
+import com.devflask.roboflask.command.moderation.Unban;
 import com.devflask.roboflask.command.util.BotInfo;
 import com.devflask.roboflask.command.Command;
 import com.devflask.roboflask.command.CommandManager;
@@ -34,6 +35,7 @@ public class Bot {
         registerCommands(new BotInfo());
         registerCommands(new Kick());
         registerCommands(new Ban());
+        registerCommands(new Unban());
     }
     
     private void initJDA() throws LoginException, InterruptedException {
