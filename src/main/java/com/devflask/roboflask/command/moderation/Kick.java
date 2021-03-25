@@ -3,7 +3,7 @@ package com.devflask.roboflask.command.moderation;
 import com.devflask.roboflask.command.Command;
 import com.devflask.roboflask.command.CommandInformation;
 import com.devflask.roboflask.util.MessageUtil;
-import com.devflask.roboflask.util.ThemeColor;
+import com.devflask.roboflask.util.EmbedColor;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -30,12 +30,6 @@ public class Kick implements Command {
         return "Kicks the member speciefied - !kick <@Person> reason";
     }
 
-    public void execute(PrivateMessageReceivedEvent event) {
-        EmbedBuilder builder = MessageUtil.getDefaultEmbed(ThemeColor.RED, event.getAuthor().getAsTag(), event.getAuthor().getAvatarUrl());
-        builder.setTitle("Silly goose, you can only kick people in a guild.");
-        event.getChannel().sendMessage(new MessageBuilder(builder.build()).build()).queue();
-    }
-
     public void execute(GuildMessageReceivedEvent event) {
         //
     }
@@ -43,7 +37,6 @@ public class Kick implements Command {
     @Override
     public void execute(CommandInformation info){
         if (info.isGuild()) execute(info.getGuildEvent());
-        else execute(info.getPrivateEvent());
     }
 
     @Override
