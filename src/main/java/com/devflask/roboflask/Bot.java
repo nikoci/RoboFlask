@@ -23,11 +23,6 @@ public class Bot {
     private ConfigManager configManager;
     private String token;
 
-    public Bot() throws LoginException, InterruptedException {
-        initJDA();
-        initializeCommands();
-    }
-
     public Bot(String token) throws LoginException, InterruptedException {
         this.token = token;
         initJDA();
