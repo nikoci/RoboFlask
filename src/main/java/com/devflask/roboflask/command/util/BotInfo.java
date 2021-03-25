@@ -1,5 +1,7 @@
-package com.devflask.roboflask.command;
+package com.devflask.roboflask.command.util;
 
+import com.devflask.roboflask.command.Command;
+import com.devflask.roboflask.command.CommandInformation;
 import com.devflask.roboflask.util.MessageUtil;
 import com.devflask.roboflask.util.ThemeColour;
 import com.sun.management.OperatingSystemMXBean;

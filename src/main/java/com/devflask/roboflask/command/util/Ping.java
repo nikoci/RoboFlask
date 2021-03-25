@@ -1,14 +1,13 @@
-package com.devflask.roboflask.command;
+package com.devflask.roboflask.command.util;
 
-import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.ChannelType;
+import com.devflask.roboflask.command.Command;
+import com.devflask.roboflask.command.CommandInformation;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -48,5 +47,4 @@ public class Ping implements Command {
         if (info.isGuild()) execute(info.getGuildEvent());
         else execute(info.getPrivateEvent());
     }
-
 }
