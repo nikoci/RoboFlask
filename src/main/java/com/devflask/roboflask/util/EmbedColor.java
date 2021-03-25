@@ -1,12 +1,12 @@
 package com.devflask.roboflask.util;
 
-public enum ThemeColor {
+public enum EmbedColor {
 
-    RED(14090240),
+    RED(16537691),
     GREEN(6612580);
 
     public final Integer color;
-    ThemeColor(Integer color){
+    EmbedColor(Integer color){
         this.color = color;
     }
 }
