@@ -24,11 +24,7 @@ public class Robo  {
     }
 
     public Robo() throws LoginException, InterruptedException {
-        if (arguments.length >= 1){
-            bot = new Bot(arguments[0]);
-        }else  {
-            bot = new Bot();
-        }
+        bot = new Bot(arguments[0]);
     }
 
 }

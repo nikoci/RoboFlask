@@ -19,3 +19,5 @@ jobs:
           java-version: 1.8
       - run: mvn -B package --file pom.xml
       - run: pm2 restart RoboFlask --update-env
+      - run: sleep 5
+      - run: pm2 logs --lines 20 --nostream RoboFlask
