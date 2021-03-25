@@ -25,6 +25,7 @@ public class Robo  {
 
     public Robo() throws LoginException, InterruptedException {
         if (arguments.length >= 1){
+            System.out.println("TOKEN IS: "+arguments[0]);
             bot = new Bot(arguments[0]);
         }else  {
             bot = new Bot();

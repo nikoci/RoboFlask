@@ -47,6 +47,7 @@ public class Bot {
     }
 
     private JDABuilder setupJDA(){
+        System.out.println("TOKEN IS: "+System.getenv("RoboflaskToken"));
         builder = JDABuilder.create(this.token == null ? System.getenv("RoboflaskToken") : this.token, getIntents());
         builder.setActivity(Activity.watching("running on cd"));
         builder.addEventListeners(commandManager);
