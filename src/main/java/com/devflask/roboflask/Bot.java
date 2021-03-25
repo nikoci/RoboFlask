@@ -1,5 +1,6 @@
 package com.devflask.roboflask;
 
+import com.devflask.roboflask.command.moderation.Ban;
 import com.devflask.roboflask.command.util.BotInfo;
 import com.devflask.roboflask.command.Command;
 import com.devflask.roboflask.command.CommandManager;
@@ -24,17 +25,20 @@ public class Bot {
 
     public Bot() throws LoginException, InterruptedException {
         initJDA();
-        registerCommands(new Ping());
-        registerCommands(new BotInfo());
-        registerCommands(new Kick());
+        initializeCommands();
     }
 
     public Bot(String token) throws LoginException, InterruptedException {
         this.token = token;
         initJDA();
+        initializeCommands();
+    }
+
+    public void initializeCommands(){
         registerCommands(new Ping());
         registerCommands(new BotInfo());
         registerCommands(new Kick());
+        registerCommands(new Ban());
     }
     
     private void initJDA() throws LoginException, InterruptedException {
