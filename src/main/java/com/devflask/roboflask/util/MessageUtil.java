@@ -20,6 +20,8 @@ public class MessageUtil {
         COMMAND_SUCCESS_BAN(" banned "),
         COMMAND_SUCCESS_UNBAN(" is unbanned. "),
 
+        COMMAND_SUCCESS_KICK(" kicked "),
+
         BLAME_DODO("Dodo is a fucking bitch"),
         BLAME_JOLLY("Jolly you didn't fucking tell us this was here and we wasted our time you cunt"),
         ;
