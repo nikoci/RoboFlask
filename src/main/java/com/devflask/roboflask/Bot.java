@@ -31,11 +31,7 @@ public class Bot {
     }
 
     public void initializeCommands(){
-        registerCommands(new Ping());
-        registerCommands(new BotInfo());
-        registerCommands(new Kick());
-        registerCommands(new Ban());
-        registerCommands(new Unban());
+        registerCommands(new Ping(), new BotInfo(), new Kick(), new Ban(), new Unban());
     }
     
     private void initJDA() throws LoginException, InterruptedException {
@@ -66,8 +62,8 @@ public class Bot {
         );
     }
 
-    private void registerCommands(Command command){
-        commandManager.addCommand(command);
+    private void registerCommands(Command ... commands){
+        for (Command cmd : commands) commandManager.addCommand(cmd);
     }
 
 
