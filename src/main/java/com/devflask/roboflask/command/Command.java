@@ -1,19 +1,20 @@
 package com.devflask.roboflask.command;
 
 import net.dv8tion.jda.api.Permission;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.HashSet;
 
 public interface Command {
-    @Nonnull
+    @NotNull
     String getName();
-    @Nonnull
+    @NotNull
     default Collection<String> getAlias() {
         return new HashSet<>();
     }
-    @Nonnull
+    @NotNull
     default String getHelp() {
         return "No help found for this command.";
     }
