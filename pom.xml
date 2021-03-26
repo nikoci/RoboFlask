@@ -66,7 +66,11 @@
             <artifactId>exposed-jdbc</artifactId>
             <version>${exposed.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.jetbrains.exposed</groupId>
+            <artifactId>exposed-java-time</artifactId>
+            <version>${exposed.version}</version>
+        </dependency>
     </dependencies>
 
     <repositories>
