@@ -1,4 +1,4 @@
-package com.devflask.roboflask.database
+package com.devflask.roboflask.database.objects
 
 import java.util.*
 
