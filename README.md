@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/devflask/roboflask">
-    <img src="https://github.com/devflask/resources/blob/main/roboflask/logo-512px.png?raw=true" alt="Logo" width="250" style="padding-left: 40px">
+    <img src="https://github.com/devflask/resources/blob/main/roboflask/banner-1.png?raw=true" alt="Logo" width="250" style="padding-left: 40px">
   </a>
 
 <h3 align="center">RoboFlask</h3>
