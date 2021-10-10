@@ -2,7 +2,8 @@ package com.devflask.roboflask;
 
 import com.devflask.roboflask.command.moderation.Ban;
 import com.devflask.roboflask.command.moderation.Unban;
-import com.devflask.roboflask.command.util.BotInfo;
+import com.devflask.roboflask.command.util.Help;
+import com.devflask.roboflask.command.util.Info;
 import com.devflask.roboflask.command.Command;
 import com.devflask.roboflask.command.CommandManager;
 import com.devflask.roboflask.command.util.Ping;
@@ -18,11 +19,9 @@ import java.util.EnumSet;
 
 public class Bot {
 
-    private JDA bot;
-    private JDABuilder builder;
-    private CommandManager commandManager = new CommandManager();;
+    private static final CommandManager commandManager = new CommandManager();;
     private ConfigManager configManager;
-    private String token;
+    private final String token;
 
     public Bot(String token) throws LoginException, InterruptedException {
         this.token = token;
@@ -31,16 +30,23 @@ public class Bot {
     }
 
     public void initializeCommands(){
-        registerCommands(new Ping(), new BotInfo(), new Kick(), new Ban(), new Unban());
+        registerCommands(
+                new Help(),
+                new Ping(),
+                new Info(),
+                new Kick(),
+                new Ban(),
+                new Unban()
+        );
     }
     
     private void initJDA() throws LoginException, InterruptedException {
-        bot = setupJDA().build();
+        JDA bot = setupJDA().build();
         bot.awaitReady();
     }
 
     private JDABuilder setupJDA(){
-        builder = JDABuilder.create(this.token == null ? System.getenv("RoboflaskToken") : this.token, getIntents());
+        JDABuilder builder = JDABuilder.create(this.token == null ? System.getenv("RoboflaskToken") : this.token, getIntents());
         builder.setActivity(Activity.watching("running on cd"));
         builder.addEventListeners(commandManager);
         return builder;
@@ -64,6 +70,10 @@ public class Bot {
 
     private void registerCommands(Command ... commands){
         for (Command cmd : commands) commandManager.addCommand(cmd);
+    }
+
+    public static CommandManager getCommandManager(){
+        return commandManager;
     }
 
 

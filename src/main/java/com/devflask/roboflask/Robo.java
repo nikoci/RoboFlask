@@ -24,7 +24,7 @@ public class Robo  {
     }
 
     public Robo() throws LoginException, InterruptedException {
-        bot = new Bot(arguments[0]);
+        bot = new Bot("MzIxNjQ5NzU4ODA2NzM2ODk3.WTa1rg.GnVQppXsw5SR8QnhmKeVanMTKfQ");
     }
 
 }

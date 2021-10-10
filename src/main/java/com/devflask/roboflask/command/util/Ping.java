@@ -1,7 +1,9 @@
 package com.devflask.roboflask.command.util;
 
+import com.devflask.roboflask.Bot;
 import com.devflask.roboflask.command.Command;
 import com.devflask.roboflask.command.CommandInformation;
+import com.devflask.roboflask.command.CommandManager;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import org.apache.logging.log4j.LogManager;
@@ -33,12 +35,16 @@ public class Ping implements Command {
     }
 
     public void execute(GuildMessageReceivedEvent event) {
-        event.getChannel().sendMessage("pong!").queue();
+        event.getJDA().getRestPing().queue(ping -> {
+            event.getChannel().sendMessage("**My ping is: **"+ping).queue();
+        });
         LOGGER.debug("PONG in guild channel with id: " + event.getChannel().getId());
     }
 
     public void execute(PrivateMessageReceivedEvent event) {
-        event.getChannel().sendMessage("pong!").queue();
+        event.getJDA().getRestPing().queue(ping -> {
+            event.getChannel().sendMessage("**My ping is: **"+ping).queue();
+        });
         LOGGER.debug("PONG in private channel with id: " + event.getChannel().getId());
     }
 

@@ -10,8 +10,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
-
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -23,17 +21,19 @@ public class Unban implements Command {
     private static final Logger LOGGER = LogManager.getLogger(Unban.class);
 
     @NotNull
-    @Override
     public String getName() {
         return "unban";
     }
 
     @NotNull
-    @Override
     public Collection<Permission> getRequiredPermissions(){
         HashSet<Permission> set = new HashSet<>();
         set.add(Permission.BAN_MEMBERS);
         return set;
+    }
+
+    public @NotNull String getHelp() {
+        return "Unbans a specified user.";
     }
 
     @Override
@@ -95,8 +95,6 @@ public class Unban implements Command {
                 ).build()
             ).queue();
         });
-
-
     }
 
     private static boolean isRightUser(Guild.Ban ban, String args) {

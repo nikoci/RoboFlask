@@ -14,13 +14,11 @@ import java.util.*;
 
 public class Ban implements Command {
 
-    @NotNull
     @Override
     public String getName() {
         return "ban";
     }
 
-    @NotNull
     @Override
     public Collection<Permission> getRequiredPermissions(){
         HashSet<Permission> set = new HashSet<>();
@@ -65,14 +63,18 @@ public class Ban implements Command {
             return;
         }
 
-        final String reason = String.join(" ", Arrays.asList(args).subList(2, args.length));
+        String reason = String.join(" ", Arrays.asList(args).subList(2, args.length));
+
+        if (!reason.isEmpty()) {
+            reason = " for "+reason;
+        }
+
         target.ban(0).reason(reason).queue();
         channel.sendMessage(MessageUtil.getCommandSuccess(
                     MessageUtil.Messages.COMMAND_SUCCESS_BAN,
                     member.getEffectiveName(),
                     member.getUser().getAvatarUrl(),
                     target.getEffectiveName(),
-                    " for ",
                     reason
                 ).build()
         ).queue();

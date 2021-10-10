@@ -1,7 +1,9 @@
 package com.devflask.roboflask.command.moderation;
 
+import com.devflask.roboflask.Bot;
 import com.devflask.roboflask.command.Command;
 import com.devflask.roboflask.command.CommandInformation;
+import com.devflask.roboflask.command.CommandManager;
 import com.devflask.roboflask.util.MessageUtil;
 import com.devflask.roboflask.util.EmbedColor;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -31,7 +33,7 @@ public class Kick implements Command {
 
     @Override
     public @NotNull String getHelp() {
-        return "Kicks the member speciefied - !kick <@Person> reason";
+        return "Kicks the member specified - !kick <@Person> [reason]";
     }
 
     public void execute(GuildMessageReceivedEvent event) {
@@ -65,14 +67,18 @@ public class Kick implements Command {
                 return;
             }
 
-            final String reason = String.join(" ", Arrays.asList(args).subList(2, args.length));
+            String reason = String.join(" ", Arrays.asList(args).subList(2, args.length));
+
+            if (!reason.isEmpty()) {
+                reason = " for "+reason;
+            }
+
             target.kick(reason).queue();
             channel.sendMessage(MessageUtil.getCommandSuccess(
                     MessageUtil.Messages.COMMAND_SUCCESS_KICK,
                     member.getEffectiveName(),
                     member.getUser().getAvatarUrl(),
                     target.getEffectiveName(),
-                    " for ",
                     reason
                     ).build()
             ).queue();
@@ -80,8 +86,8 @@ public class Kick implements Command {
 
 
     @Override
-    public void execute(CommandInformation info){
-        if (info.isGuild()) execute(info.getGuildEvent());
+    public void execute(CommandInformation ci){
+        if (ci.isGuild()) execute(ci.getGuildEvent());
     }
 
     @Override
