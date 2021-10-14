@@ -48,8 +48,6 @@ public class Info implements Command {
 
     public void execute(GuildMessageReceivedEvent event) {
         event.getChannel().sendMessage(messageEmbed(event.getJDA())).queue();
-        Role role = event.getGuild().getRoleById("745990929265066004");
-        role.getManager().setColor(9074428).queue();
     }
 
     private MessageEmbed messageEmbed(JDA jda){
