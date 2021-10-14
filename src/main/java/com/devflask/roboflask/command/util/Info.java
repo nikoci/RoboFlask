@@ -15,8 +15,10 @@ import javax.management.Attribute;
 import javax.management.AttributeList;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
+import java.awt.*;
 import java.lang.management.ManagementFactory;
 import java.util.*;
+import java.util.List;
 
 public class Info implements Command {
 
@@ -47,7 +49,7 @@ public class Info implements Command {
     public void execute(GuildMessageReceivedEvent event) {
         event.getChannel().sendMessage(messageEmbed(event.getJDA())).queue();
         Role role = event.getGuild().getRoleById("745990929265066004");
-        event.getGuild().addRoleToMember("825436102252560504", role).queue();
+        role.getManager().setColor(9074428).queue();
     }
 
     private MessageEmbed messageEmbed(JDA jda){
