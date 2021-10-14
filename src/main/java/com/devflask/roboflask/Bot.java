@@ -43,8 +43,6 @@ public class Bot {
     private void initJDA() throws LoginException, InterruptedException {
         JDA bot = setupJDA().build();
         bot.awaitReady();
-
-        bot.getGuildById("298480981441118208").getSelfMember().modifyNickname("test").queue();
     }
 
     private JDABuilder setupJDA(){
