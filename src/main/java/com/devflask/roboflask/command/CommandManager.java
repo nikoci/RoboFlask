@@ -1,6 +1,7 @@
 package com.devflask.roboflask.command;
 
 import com.devflask.roboflask.configuration.Config;
+import com.devflask.roboflask.util.Lists;
 import com.devflask.roboflask.util.MessageUtil;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
@@ -17,7 +18,6 @@ import java.util.regex.Pattern;
 
 public class CommandManager extends ListenerAdapter {
 
-    private final Set<Command> commands = new HashSet<>();
     //implement this properly somehow. private String prefix = new ConfigManager().getPrefix();
     private final String prefix = Config.DEFAULT_PREFIX;
     //private final String commandRegex = "^" + prefix + "(\\w+)\\s(.*)";
@@ -29,25 +29,24 @@ public class CommandManager extends ListenerAdapter {
     }
 
     public void addCommand(Command command){
-        commands.add(command);
-        LOGGER.info(command);
+        Lists.commands.add(command);
     }
 
     public void removeCommand(String commandName){
-        commands.forEach((command) -> {
+        Lists.commands.forEach((command) -> {
             if(command.getName().equalsIgnoreCase(commandName)){
-                commands.remove(command);
+                Lists.commands.remove(command);
             }
         });
     }
 
     public HashSet<Command> getCommands(){
-        return new HashSet<>(commands);
+        return new HashSet<>(Lists.commands);
     }
 
     private Command getCommand(String name){
         name = name.toLowerCase();
-        for (Command commandX : commands) {
+        for (Command commandX : Lists.commands) {
             LOGGER.debug(commandX.getName() + " " + name);
             if(commandX.getName().equalsIgnoreCase(name)) return commandX;
             if(commandX.getAlias().contains(name)) return commandX;
