@@ -1,6 +1,7 @@
 package com.devflask.roboflask;
 
 import com.devflask.roboflask.command.moderation.Ban;
+import com.devflask.roboflask.command.moderation.Get;
 import com.devflask.roboflask.command.moderation.Unban;
 import com.devflask.roboflask.command.util.Help;
 import com.devflask.roboflask.command.util.Info;
@@ -9,6 +10,7 @@ import com.devflask.roboflask.command.CommandManager;
 import com.devflask.roboflask.command.util.Ping;
 import com.devflask.roboflask.command.moderation.Kick;
 import com.devflask.roboflask.configuration.ConfigManager;
+import com.devflask.roboflask.util.Maps;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -16,14 +18,20 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 
 import javax.security.auth.login.LoginException;
 import java.util.EnumSet;
+import java.util.Random;
 
 public class Bot {
+
+    public int id;
 
     private static final CommandManager commandManager = new CommandManager();;
     private ConfigManager configManager;
     private final String token;
 
     public Bot(String token) throws LoginException, InterruptedException {
+        this.id = generateId();
+        Maps.botMap.put(this, this.id);
+
         this.token = token;
         initJDA();
         initializeCommands();
@@ -36,7 +44,8 @@ public class Bot {
                 new Info(),
                 new Kick(),
                 new Ban(),
-                new Unban()
+                new Unban(),
+                new Get()
         );
     }
     
@@ -74,6 +83,20 @@ public class Bot {
 
     public static CommandManager getCommandManager(){
         return commandManager;
+    }
+
+    private int generateId(){
+        //generate
+        int i = new Random().nextInt(10000000, 99999999);
+
+        //check availability
+        for (Bot bot : Maps.botMap.keySet()){
+            while (bot.id == i){
+                i = new Random().nextInt(10000000, 99999999);
+            }
+        }
+
+        return i;
     }
 
 
