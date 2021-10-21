@@ -3,12 +3,12 @@ package com.devflask.roboflask.command.moderation;
 import com.devflask.roboflask.command.Command;
 import com.devflask.roboflask.command.CommandInformation;
 import com.devflask.roboflask.util.MessageUtil;
+import com.devflask.roboflask.util.Messages;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -42,7 +42,7 @@ public class Ban implements Command {
 
         if (target == null || message.getMentionedMembers().isEmpty()){
             channel.sendMessage(MessageUtil.getCommandError(
-                        MessageUtil.Messages.COMMAND_ERROR_USAGE,
+                        Messages.COMMAND_ERROR_USAGE,
                         member.getEffectiveName(),
                         member.getUser().getAvatarUrl(),
                         "!ban <user> [reason]"
@@ -53,7 +53,7 @@ public class Ban implements Command {
 
         if (!member.canInteract(target) || !event.getGuild().getSelfMember().canInteract(target)){
             channel.sendMessage(MessageUtil.getPermissionError(
-                        MessageUtil.Messages.PERMISSION_ERROR_HIERARCHY,
+                        Messages.PERMISSION_ERROR_HIERARCHY,
                         this.getRequiredPermissions(),
                         member.getEffectiveName(),
                         member.getUser().getAvatarUrl()
@@ -71,7 +71,7 @@ public class Ban implements Command {
 
         target.ban(0).reason(reason).queue();
         channel.sendMessage(MessageUtil.getCommandSuccess(
-                    MessageUtil.Messages.COMMAND_SUCCESS_BAN,
+                    Messages.COMMAND_SUCCESS_BAN,
                     member.getEffectiveName(),
                     member.getUser().getAvatarUrl(),
                     target.getEffectiveName(),
