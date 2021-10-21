@@ -10,7 +10,6 @@ import com.devflask.roboflask.command.CommandManager;
 import com.devflask.roboflask.command.util.Ping;
 import com.devflask.roboflask.command.moderation.Kick;
 import com.devflask.roboflask.configuration.ConfigManager;
-import com.devflask.roboflask.util.Maps;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -18,10 +17,13 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 
 import javax.security.auth.login.LoginException;
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class Bot {
 
+    public static Map<Bot, Integer> botMap = new HashMap<>();
     public int id;
 
     private static final CommandManager commandManager = new CommandManager();;
@@ -30,7 +32,7 @@ public class Bot {
 
     public Bot(String token) throws LoginException, InterruptedException {
         this.id = generateId();
-        Maps.botMap.put(this, this.id);
+        botMap.put(this, this.id);
 
         this.token = token;
         initJDA();
@@ -90,7 +92,7 @@ public class Bot {
         int i = new Random().nextInt(10000000, 99999999);
 
         //check availability
-        for (Bot bot : Maps.botMap.keySet()){
+        for (Bot bot : botMap.keySet()){
             while (bot.id == i){
                 i = new Random().nextInt(10000000, 99999999);
             }

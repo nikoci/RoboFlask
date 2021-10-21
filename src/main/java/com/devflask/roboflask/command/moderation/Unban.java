@@ -3,6 +3,7 @@ package com.devflask.roboflask.command.moderation;
 import com.devflask.roboflask.command.Command;
 import com.devflask.roboflask.command.CommandInformation;
 import com.devflask.roboflask.util.MessageUtil;
+import com.devflask.roboflask.util.Messages;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -49,7 +50,7 @@ public class Unban implements Command {
 
         if (args.length < 2){
             channel.sendMessage(MessageUtil.getCommandError(
-                    MessageUtil.Messages.COMMAND_ERROR_USAGE,
+                    Messages.COMMAND_ERROR_USAGE,
                     member.getEffectiveName(),
                     member.getUser().getAvatarUrl(),
                     "!unban <user id>"
@@ -62,7 +63,7 @@ public class Unban implements Command {
 
         if (!event.getGuild().getSelfMember().hasPermission(Permission.BAN_MEMBERS)){
             channel.sendMessage(MessageUtil.getPermissionError(
-                    MessageUtil.Messages.PERMISSION_ERROR_BOT,
+                    Messages.PERMISSION_ERROR_BOT,
                     this.getRequiredPermissions(),
                     member.getEffectiveName(),
                     member.getUser().getAvatarUrl()
@@ -76,7 +77,7 @@ public class Unban implements Command {
             List<User> possibleTargets = bans.stream().filter((ban) -> isRightUser(ban, strmember)).map(Guild.Ban::getUser).collect(Collectors.toList());
             if (possibleTargets.isEmpty()){
                 channel.sendMessage(MessageUtil.getCommandError(
-                        MessageUtil.Messages.COMMAND_ERROR_UNBAN,
+                        Messages.COMMAND_ERROR_UNBAN,
                         member.getEffectiveName(),
                         member.getUser().getAvatarUrl()
                         ).clearFields()
@@ -89,7 +90,7 @@ public class Unban implements Command {
             String targetName = String.format("%#s", target);
             event.getGuild().unban(target).queue();
             channel.sendMessage(MessageUtil.getCommandSuccess(
-                    MessageUtil.Messages.COMMAND_SUCCESS_UNBAN,
+                    Messages.COMMAND_SUCCESS_UNBAN,
                     targetName,
                     member.getUser().getAvatarUrl()
                 ).build()

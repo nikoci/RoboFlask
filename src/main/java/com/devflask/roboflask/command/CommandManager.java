@@ -1,9 +1,8 @@
 package com.devflask.roboflask.command;
 
 import com.devflask.roboflask.configuration.Config;
-import com.devflask.roboflask.util.Lists;
 import com.devflask.roboflask.util.MessageUtil;
-import net.dv8tion.jda.api.entities.ChannelType;
+import com.devflask.roboflask.util.Messages;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -18,6 +17,7 @@ import java.util.regex.Pattern;
 
 public class CommandManager extends ListenerAdapter {
 
+    public static List<Command> commands = new ArrayList<>();
     //implement this properly somehow. private String prefix = new ConfigManager().getPrefix();
     private final String prefix = Config.DEFAULT_PREFIX;
     //private final String commandRegex = "^" + prefix + "(\\w+)\\s(.*)";
@@ -29,24 +29,24 @@ public class CommandManager extends ListenerAdapter {
     }
 
     public void addCommand(Command command){
-        Lists.commands.add(command);
+        commands.add(command);
     }
 
     public void removeCommand(String commandName){
-        Lists.commands.forEach((command) -> {
+        commands.forEach((command) -> {
             if(command.getName().equalsIgnoreCase(commandName)){
-                Lists.commands.remove(command);
+                commands.remove(command);
             }
         });
     }
 
     public HashSet<Command> getCommands(){
-        return new HashSet<>(Lists.commands);
+        return new HashSet<>(commands);
     }
 
     private Command getCommand(String name){
         name = name.toLowerCase();
-        for (Command commandX : Lists.commands) {
+        for (Command commandX : commands) {
             LOGGER.debug(commandX.getName() + " " + name);
             if(commandX.getName().equalsIgnoreCase(name)) return commandX;
             if(commandX.getAlias().contains(name)) return commandX;
@@ -69,7 +69,7 @@ public class CommandManager extends ListenerAdapter {
 
         if(!(Objects.requireNonNull(event.getMember()).hasPermission(command.getRequiredPermissions()))){
             event.getChannel().sendMessage(
-                    MessageUtil.getPermissionError(MessageUtil.Messages.PERMISSION_ERROR_USER, command.getRequiredPermissions(),
+                    MessageUtil.getPermissionError(Messages.PERMISSION_ERROR_USER, command.getRequiredPermissions(),
                             event.getAuthor().getName(),
                             event.getAuthor().getAvatarUrl()).build()
             ).queue();
@@ -78,7 +78,7 @@ public class CommandManager extends ListenerAdapter {
 
         if(!(Objects.requireNonNull(event.getGuild().getSelfMember()).hasPermission(command.getRequiredPermissions()))){
             event.getChannel().sendMessage(
-                    MessageUtil.getPermissionError(MessageUtil.Messages.PERMISSION_ERROR_BOT, command.getRequiredPermissions(),
+                    MessageUtil.getPermissionError(Messages.PERMISSION_ERROR_BOT, command.getRequiredPermissions(),
                             event.getAuthor().getName(),
                             event.getAuthor().getAvatarUrl()).build()
             ).queue();

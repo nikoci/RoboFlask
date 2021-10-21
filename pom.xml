@@ -11,6 +11,7 @@
     <properties>
         <kotlin.version>1.4.31</kotlin.version>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
+        <java.version>17</java.version>
     </properties>
 
     <dependencies>
