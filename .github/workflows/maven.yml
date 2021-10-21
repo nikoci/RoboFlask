@@ -15,9 +15,6 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 17
-<<<<<<< HEAD
-=======
       - run: mvn -version
->>>>>>> cfdd839c12d94424af793cf7c53c743db2124184
       - run: mvn -B package --file pom.xml
       - run: pm2 restart RoboFlask --update-env
