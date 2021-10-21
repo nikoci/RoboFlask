@@ -61,6 +61,8 @@ public class CommandManager extends ListenerAdapter {
 
         if(command == null) return;
 
+        event.getMessage().delete().queue();
+
         if(adminOverrides.contains(event.getAuthor().getIdLong())){
             command.execute(new CommandInformation(event, event.getMessage().getContentRaw()));
             LOGGER.debug(event.getAuthor().getAsTag() + " executed admin command: " + command.getName());
