@@ -1,12 +1,13 @@
 package com.devflask.roboflask.database;
 
-import com.devflask.roboflask.util.Maps;
-
 import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class Database {
 
+    public static Map<Database, Integer> databaseMap = new HashMap<>();
     public int id;
 
     boolean connected;
@@ -19,7 +20,7 @@ public class Database {
 
     public Database(String host, String username, String password) {
         this.id = generateId();
-        Maps.databaseMap.put(this, this.id);
+        databaseMap.put(this, this.id);
 
         connected = false;
         this.host = host;
@@ -57,7 +58,7 @@ public class Database {
         int i = new Random().nextInt(10000000, 99999999);
 
         //check availability
-        for (Database database : Maps.databaseMap.keySet()){
+        for (Database database : databaseMap.keySet()){
             while (database.id == i){
                 i = new Random().nextInt(10000000, 99999999);
             }
