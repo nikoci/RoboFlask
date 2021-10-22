@@ -1,8 +1,6 @@
 package com.devflask.roboflask;
 
 import com.devflask.roboflask.database.Database;
-import com.devflask.roboflask.util.Lists;
-import com.devflask.roboflask.util.Maps;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,17 +11,17 @@ import java.util.*;
 
 public class Robo  {
 
+    public static Map<Robo, Integer> roboMap = new HashMap<>();
+    public int id;
+
     private static final Logger LOGGER = LogManager.getLogger(Robo.class);
 
-    public int id;
     public Bot bot = null;
     public Database database = null;
     private  static String[] arguments;
 
     //Way into the program
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        Maps.hook();
-        Lists.hook();
 
         try {
             arguments = args;
@@ -35,7 +33,7 @@ public class Robo  {
 
     public Robo(){
         this.id = generateId();
-        Maps.roboMap.put(this, this.id);
+        roboMap.put(this, this.id);
         LOGGER.info("Created Robo with id: "+this.id);
     }
 
@@ -99,7 +97,7 @@ public class Robo  {
         int i = new Random().nextInt(10000000, 99999999);
 
         //check availability
-        for (Robo robo : Maps.roboMap.keySet()){
+        for (Robo robo : roboMap.keySet()){
             while (robo.id == i){
                 i = new Random().nextInt(10000000, 99999999);
             }
