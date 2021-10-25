@@ -66,7 +66,6 @@ This software is not hosted in any way, shape or form. You, the end-user would h
 * feature 1
   * sub-feature 1
   * sub-feature 2
-  * sub-feature 3
 * feature 2
 * feature 3
 * feature 4
