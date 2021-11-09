@@ -1,9 +1,7 @@
 package com.devflask.roboflask.command.util;
 
-import com.devflask.roboflask.Bot;
 import com.devflask.roboflask.command.Command;
 import com.devflask.roboflask.command.CommandInformation;
-import com.devflask.roboflask.command.CommandManager;
 import com.devflask.roboflask.util.MessageUtil;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
@@ -41,7 +39,7 @@ public class Help implements Command {
 
     public void execute(GuildMessageReceivedEvent event) {
         StringBuilder commands = new StringBuilder();
-        HashMap<String, String> commandsMap = new HashMap();
+        HashMap<String, String> commandsMap = new HashMap<>();
         for (Command c : getManager().getCommands()){
             System.out.println(c.getName()+" - "+c.getHelp());
             commands
@@ -55,7 +53,7 @@ public class Help implements Command {
         commandsMap.put("Commands", commands.toString());
 
         event.getChannel().sendMessage(MessageUtil.getInformative(
-                event.getMember().getEffectiveName(),
+                Objects.requireNonNull(event.getMember()).getEffectiveName(),
                 event.getAuthor().getAvatarUrl(),
                 "",
                 "",

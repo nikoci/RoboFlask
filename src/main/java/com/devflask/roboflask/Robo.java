@@ -6,106 +6,121 @@ import org.apache.logging.log4j.Logger;
 
 import javax.security.auth.login.LoginException;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 
-public class Robo  {
-
-    public static Map<Robo, Integer> roboMap = new HashMap<>();
-    public int id;
+public class Robo {
 
     private static final Logger LOGGER = LogManager.getLogger(Robo.class);
 
-    public Bot bot = null;
-    public Database database = null;
-    private  static String[] arguments;
+    public static final List<Database> databases = new ArrayList<>();
+    public static final List<Bot> bots = new ArrayList<>();
+    public static List<Integer> ids = new ArrayList<>();
+    public static Robo instance;
 
     //Way into the program
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-
+    public static void main(String[] args) {
         try {
-            arguments = args;
-            Robo robo = new Robo().create();
+            instance = new Robo().setup(args);
         } catch (LoginException | InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    public Robo(){
-        this.id = generateId();
-        roboMap.put(this, this.id);
-        LOGGER.info("Created Robo with id: "+this.id);
-    }
-
-    //Setters
-    public void setBot(Bot bot) {
-        this.bot = bot;
-    }
-
-    public void setDatabase(Database database) {
-        this.database = database;
-    }
-
-    public static void setArguments(String[] arguments) {
-        Robo.arguments = arguments;
-    }
-
-    //Getters
-    public Bot getBot() {
-        return bot;
-    }
-
-    public Database getDatabase() {
-        return database;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public Robo create() throws LoginException, InterruptedException, SQLException, ClassNotFoundException {
-
-        //Check bot
-        if (bot == null){
-            if (arguments.length < 1){
-                LOGGER.error("Robo:"+this.id+" has no bot bound to it!");
-                System.exit(1);
-            }else {
-                bot = new Bot(arguments[0]);
+    public Robo setup(String[] arguments) throws LoginException, InterruptedException {
+        //Check initial bot
+        if (arguments.length < 1) {
+            LOGGER.error("RoboFlask has no initial bot!");
+            LOGGER.info("Exiting...");
+            System.exit(1);
+        } else if (arguments.length == 1) {
+            addBot(new Bot(arguments[0]));
+        } else if (arguments.length > 2) {
+            if (arguments.length > 4) {
+                String host, username, password;
+                host = arguments[1];
+                username = arguments[2];
+                password = arguments[3];
+                addBot(new Bot(arguments[0], new Database(host, username, password)));
+            } else {
+                LOGGER.warn("RoboFlask has no database! Check the credentials and try again");
+                LOGGER.info("Defaulting to no database...");
+                addBot(new Bot(arguments[0]));
             }
         }
-
-        //Check database
-        if (database == null){
-            if (arguments.length < 3){
-                LOGGER.info("Database remains unset for Robo:"+this.id);
-                return this;
-            }else {
-                String pass = "";
-                if (arguments.length > 3){
-                    pass = arguments[3];
-                }
-                database = new Database(arguments[1], arguments[2], pass).connect();
-            }
-        }
-
         return this;
     }
 
-    private int generateId(){
+    public static int generateId() {
         //generate
-        int i = new Random().nextInt(10000000, 99999999);
+        int i = new Random().nextInt(Integer.MAX_VALUE);
 
         //check availability
-        for (Robo robo : roboMap.keySet()){
-            while (robo.id == i){
-                i = new Random().nextInt(10000000, 99999999);
+        for (int id : ids) {
+            while (id == i) {
+                i = new Random().nextInt(Integer.MAX_VALUE);
             }
         }
 
+        ids.add(i);
         return i;
     }
 
+    public static void addBot(Bot bot) {
+        bots.add(bot);
+    }
+
+    public static void removeBot(Bot bot) {
+        bot.getJDA().shutdown();
+        bots.remove(bot);
+    }
+
+    public static void removeBot(int id) {
+        for (Bot bot : bots) {
+            if (bot.getId() == id) {
+                removeBot(bot);
+                break;
+            }
+        }
+    }
+
+    public static Bot getBot(int id) {
+        for (Bot bot : bots) {
+            if (bot.getId() == id) {
+                return bot;
+            }
+        }
+        return null;
+    }
+
+    public static void addDatabase(Database database) {
+        databases.add(database);
+    }
+
+    public static void removeDatabase(Database database) throws SQLException {
+        database.disconnect();
+        databases.remove(database);
+    }
+
+    public static void removeDatabase(int id) throws SQLException {
+        for (Database database : databases) {
+            if (database.getId() == id) {
+                removeDatabase(database);
+                break;
+            }
+        }
+    }
+
+    public static Database getDatabase(int id) {
+        for (Database database : databases) {
+            if (database.getId() == id) {
+                return database;
+            }
+        }
+        return null;
+    }
 }
 
 

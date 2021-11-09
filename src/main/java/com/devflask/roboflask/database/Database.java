@@ -1,51 +1,57 @@
 package com.devflask.roboflask.database;
 
+import com.devflask.roboflask.Robo;
+
 import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Database {
 
-    public static Map<Database, Integer> databaseMap = new HashMap<>();
     public int id;
 
-    boolean connected;
-
-    String host;
-    String username;
+    private final String host;
+    private final String username;
     private final String password;
 
-    Connection connection;
+    public Connection connection;
 
     public Database(String host, String username, String password) {
-        this.id = generateId();
-        databaseMap.put(this, this.id);
+        this.id = Robo.generateId();
+        Robo.addDatabase(this);
 
-        connected = false;
         this.host = host;
         this.username = username;
         this.password = password;
     }
 
-    public Database connect() throws SQLException, ClassNotFoundException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        connection = DriverManager.getConnection(
-                host,
-                username,
-                password
-        );
-        return this;
-    }
+    public Database connect() {
+        try {
+            connection = DriverManager.getConnection(
+                    host,
+                    username,
+                    password
+            );
 
-    public ResultSet executeQuery(String query) throws SQLException {
-        Statement stmt = connection.createStatement();
-        return stmt.executeQuery(query);
-    }
+            this.executeUpdate("CREATE TABLE IF NOT EXISTS `profiles` (" +
+                    " userID VARCHAR(255) not NULL, " +
+                    " guildID VARCHAR(255) not NULL, " +
+                    " level INTEGER, " +
+                    " xp INTEGER, " +
+                    " xpToNextLevel INTEGER, " +
+                    " coins INTEGER, " +
+                    " messages INTEGER, " +
+                    " profileBanner TEXT, " +
+                    " profileBorder TEXT, " +
+                    " profileColor INTEGER, " +
+                    " PRIMARY KEY (userID, guildID)" +
+                    ");");
 
-    public int executeUpdate(String query) throws SQLException {
-        Statement stmt = connection.createStatement();
-        return stmt.executeUpdate(query);
+            return this;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public Database disconnect() throws SQLException {
@@ -53,18 +59,42 @@ public class Database {
         return this;
     }
 
-    private int generateId(){
-        //generate
-        int i = new Random().nextInt(10000000, 99999999);
-
-        //check availability
-        for (Database database : databaseMap.keySet()){
-            while (database.id == i){
-                i = new Random().nextInt(10000000, 99999999);
-            }
-        }
-
-        return i;
+    public ResultSet executeQuery(String query) throws SQLException {
+        if (connection.isClosed()) return null;
+        Statement stmt = connection.createStatement();
+        return stmt.executeQuery(query);
     }
 
+    public void executeUpdate(String query) throws SQLException {
+        if (connection.isClosed()) return;
+        Statement stmt = connection.createStatement();
+        stmt.executeUpdate(query);
+    }
+
+    //Static Methods
+
+    public static Database getDatabase(int id) {
+        for (Database database : Robo.databases) {
+            if (database.id == id) {
+                return database;
+            }
+        }
+        return null;
+    }
+
+    public static Database[] getDatabases(String host, String username, String password) {
+        List<Database> databaseList = new ArrayList<>();
+        for (Database database : Robo.databases) {
+            if (database.host.equalsIgnoreCase(host)
+                    && database.username.equalsIgnoreCase(username)
+                    && database.password.equalsIgnoreCase(password)) {
+                databaseList.add(database);
+            }
+        }
+        return databaseList.size() == 0 ? null : databaseList.toArray(new Database[0]);
+    }
+
+    public int getId() {
+        return id;
+    }
 }
