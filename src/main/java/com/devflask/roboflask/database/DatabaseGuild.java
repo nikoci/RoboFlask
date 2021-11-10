@@ -1,30 +1,27 @@
 package com.devflask.roboflask.database;
 
-import com.devflask.roboflask.command.Command;
+import com.devflask.roboflask.interfaces.Command;
+import com.devflask.roboflask.interfaces.Rank;
 import net.dv8tion.jda.api.entities.Guild;
 
 public class DatabaseGuild {
 
     private Guild guild;
     private String prefix;
-    private Command[] customCommands;
+    private DatabaseCommand[] customCommands;
+    private DatabaseRank[] customRanks;
 
     //stats
     private int totalCommands;
     private int totalMessages;
 
-    //statics
-    private String[] rankIcons;
-    private String[] rankNames;
-
-    public DatabaseGuild(Guild guild, String prefix, Command[] customCommands, int totalCommands, int totalMessages, String[] rankIcons, String[] rankNames) {
+    public DatabaseGuild(Guild guild, String prefix, DatabaseCommand[] customCommands, DatabaseRank[] customRanks, int totalCommands, int totalMessages) {
         this.guild = guild;
         this.prefix = prefix;
         this.customCommands = customCommands;
         this.totalCommands = totalCommands;
         this.totalMessages = totalMessages;
-        this.rankIcons = rankIcons;
-        this.rankNames = rankNames;
+        this.customRanks = customRanks;
     }
 
     public Guild getGuild() {
@@ -43,8 +40,16 @@ public class DatabaseGuild {
         return customCommands;
     }
 
-    public void setCustomCommands(Command[] customCommands) {
+    public void setCustomCommands(DatabaseCommand[] customCommands) {
         this.customCommands = customCommands;
+    }
+
+    public Rank[] getCustomRanks() {
+        return customRanks;
+    }
+
+    public void setCustomRanks(DatabaseRank[] customRanks) {
+        this.customRanks = customRanks;
     }
 
     public int getTotalCommands() {
@@ -61,21 +66,5 @@ public class DatabaseGuild {
 
     public void setTotalMessages(int totalMessages) {
         this.totalMessages = totalMessages;
-    }
-
-    public String[] getRankIcons() {
-        return rankIcons;
-    }
-
-    public void setRankIcons(String[] rankIcons) {
-        this.rankIcons = rankIcons;
-    }
-
-    public String[] getRankNames() {
-        return rankNames;
-    }
-
-    public void setRankNames(String[] rankNames) {
-        this.rankNames = rankNames;
     }
 }
