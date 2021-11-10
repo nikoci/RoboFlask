@@ -1,6 +1,5 @@
 package com.devflask.roboflask;
 
-import com.devflask.roboflask.command.Command;
 import com.devflask.roboflask.command.CommandManager;
 import com.devflask.roboflask.command.moderation.Ban;
 import com.devflask.roboflask.command.moderation.Get;
@@ -10,6 +9,7 @@ import com.devflask.roboflask.command.util.Help;
 import com.devflask.roboflask.command.util.Info;
 import com.devflask.roboflask.command.util.Ping;
 import com.devflask.roboflask.database.Database;
+import com.devflask.roboflask.interfaces.Command;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;

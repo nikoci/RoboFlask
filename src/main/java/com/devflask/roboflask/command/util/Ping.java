@@ -1,7 +1,7 @@
 package com.devflask.roboflask.command.util;
 
-import com.devflask.roboflask.command.Command;
 import com.devflask.roboflask.command.CommandInformation;
+import com.devflask.roboflask.interfaces.Command;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import org.apache.logging.log4j.LogManager;
@@ -28,7 +28,7 @@ public class Ping implements Command {
     }
 
     @Override
-    public @NotNull String getHelp() {
+    public @NotNull String getDescription() {
         return "Pings the server.";
     }
 

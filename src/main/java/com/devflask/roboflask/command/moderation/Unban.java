@@ -1,7 +1,7 @@
 package com.devflask.roboflask.command.moderation;
 
-import com.devflask.roboflask.command.Command;
 import com.devflask.roboflask.command.CommandInformation;
+import com.devflask.roboflask.interfaces.Command;
 import com.devflask.roboflask.util.MessageUtil;
 import com.devflask.roboflask.util.Messages;
 import net.dv8tion.jda.api.Permission;
@@ -33,7 +33,7 @@ public class Unban implements Command {
         return set;
     }
 
-    public @NotNull String getHelp() {
+    public @NotNull String getDescription() {
         return "Unbans a specified user.";
     }
 

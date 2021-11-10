@@ -1,7 +1,7 @@
 package com.devflask.roboflask.command.util;
 
-import com.devflask.roboflask.command.Command;
 import com.devflask.roboflask.command.CommandInformation;
+import com.devflask.roboflask.interfaces.Command;
 import com.devflask.roboflask.util.MessageUtil;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -36,7 +36,7 @@ public class Info implements Command {
     }
 
     @Override
-    public @NotNull String getHelp() {
+    public @NotNull String getDescription() {
         return "Retrieves information about the bot.";
     }
 

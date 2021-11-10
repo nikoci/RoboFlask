@@ -1,7 +1,7 @@
 package com.devflask.roboflask.command.moderation;
 
-import com.devflask.roboflask.command.Command;
 import com.devflask.roboflask.command.CommandInformation;
+import com.devflask.roboflask.interfaces.Command;
 import com.devflask.roboflask.util.MessageUtil;
 import com.devflask.roboflask.util.Messages;
 import net.dv8tion.jda.api.Permission;
@@ -10,7 +10,9 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 
 public class Ban implements Command {
 

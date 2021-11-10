@@ -1,6 +1,7 @@
 package com.devflask.roboflask.command;
 
 import com.devflask.roboflask.configuration.Config;
+import com.devflask.roboflask.interfaces.Command;
 import com.devflask.roboflask.util.MessageUtil;
 import com.devflask.roboflask.util.Messages;
 import net.dv8tion.jda.api.entities.Message;
