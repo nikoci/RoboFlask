@@ -47,6 +47,31 @@ public class Database {
                     " PRIMARY KEY (userID, guildID)" +
                     ");");
 
+            this.executeUpdate("CREATE TABLE IF NOT EXISTS `guilds` (\n" +
+                    "  `guildID` VARCHAR(255) NOT NULL,\n" +
+                    "  `prefix` VARCHAR(255),\n" +
+                    "  `customCommands` JSON,\n" +
+                    "  `customRanks` JSON,\n" +
+                    "  `totalCommands` INTEGER,\n" +
+                    "  `totalMessages` INTEGER,\n" +
+                    "  PRIMARY KEY (`guildID`)\n" +
+                    ");");
+
+            this.executeUpdate("CREATE TABLE IF NOT EXISTS `commands` (\n" +
+                    "  `commandID` INTEGER NOT NULL AUTO_INCREMENT,\n" +
+                    "  `guildID` VARCHAR(255) NOT NULL,\n" +
+                    "  `data` JSON,\n" +
+                    "  PRIMARY KEY (`commandID`, `guildID`)\n" +
+                    ");");
+
+            this.executeUpdate("CREATE TABLE IF NOT EXISTS `ranks` (\n" +
+                    "  `rankID` INTEGER NOT NULL AUTO_INCREMENT,\n" +
+                    "  `guildID` VARCHAR(255) NOT NULL,\n" +
+                    "  `data` JSON,\n" +
+                    "  PRIMARY KEY (`rankID`, `guildID`)\n" +
+                    ");");
+
+
             return this;
         } catch (SQLException e) {
             e.printStackTrace();
