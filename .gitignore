@@ -23,7 +23,8 @@
 hs_err_pid*
 
 # custom
-.idea/
+.idea/*
+!.idea/icon.svg
 src/test/
 *.iml
 target/

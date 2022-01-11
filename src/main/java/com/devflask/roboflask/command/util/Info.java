@@ -1,10 +1,10 @@
 package com.devflask.roboflask.command.util;
 
-import com.devflask.roboflask.command.Command;
 import com.devflask.roboflask.command.CommandInformation;
+import com.devflask.roboflask.interfaces.Command;
 import com.devflask.roboflask.util.MessageUtil;
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import org.apache.logging.log4j.LogManager;
@@ -15,10 +15,8 @@ import javax.management.Attribute;
 import javax.management.AttributeList;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
-import java.awt.*;
 import java.lang.management.ManagementFactory;
 import java.util.*;
-import java.util.List;
 
 public class Info implements Command {
 
@@ -38,7 +36,7 @@ public class Info implements Command {
     }
 
     @Override
-    public @NotNull String getHelp() {
+    public @NotNull String getDescription() {
         return "Retrieves information about the bot.";
     }
 
@@ -93,9 +91,13 @@ public class Info implements Command {
                 "",
                 "Information",
                 fields,
-                "\n__RoboFlask__ bot software, a very powerful discord bot. Lots of features from fun games to useful utilities like __doc parsing__ and __code management__. RoboFlask is mainly focused towards the __programming community__ of discord which is why it provides a lot of __tools__ for code management\n " +
-                        "\n**Getting Started**\n" +
-                        "Start by using the `help` command and see what the bot has to offer. This can vary from guild to guild as they can easily disable features. If you want to see all features the bot provides, check https://github.com/devflask/RoboFlask.\n** **"
+                """
+
+                        __RoboFlask__ bot software, a very powerful discord bot. Lots of features from fun games to useful utilities like __doc parsing__ and __code management__. RoboFlask is mainly focused towards the __programming community__ of discord which is why it provides a lot of __tools__ for code management
+                         
+                        **Getting Started**
+                        Start by using the `help` command and see what the bot has to offer. This can vary from guild to guild as they can easily disable features. If you want to see all features the bot provides, check https://github.com/devflask/RoboFlask.
+                        ** **"""
         ).build();
     }
 

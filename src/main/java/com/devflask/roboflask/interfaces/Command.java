@@ -1,6 +1,8 @@
-package com.devflask.roboflask.command;
+package com.devflask.roboflask.interfaces;
 
 import com.devflask.roboflask.Bot;
+import com.devflask.roboflask.command.CommandInformation;
+import com.devflask.roboflask.command.CommandManager;
 import net.dv8tion.jda.api.Permission;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,8 +23,9 @@ public interface Command {
     default Collection<String> getAlias() {
         return new HashSet<>();
     }
+
     @NotNull
-    default String getHelp() {
+    default String getDescription() {
         return "No help found for this command.";
     }
 

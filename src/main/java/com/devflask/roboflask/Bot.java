@@ -1,15 +1,15 @@
 package com.devflask.roboflask;
 
+import com.devflask.roboflask.command.CommandManager;
 import com.devflask.roboflask.command.moderation.Ban;
 import com.devflask.roboflask.command.moderation.Get;
+import com.devflask.roboflask.command.moderation.Kick;
 import com.devflask.roboflask.command.moderation.Unban;
 import com.devflask.roboflask.command.util.Help;
 import com.devflask.roboflask.command.util.Info;
-import com.devflask.roboflask.command.Command;
-import com.devflask.roboflask.command.CommandManager;
 import com.devflask.roboflask.command.util.Ping;
-import com.devflask.roboflask.command.moderation.Kick;
-import com.devflask.roboflask.configuration.ConfigManager;
+import com.devflask.roboflask.database.Database;
+import com.devflask.roboflask.interfaces.Command;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -17,29 +17,46 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 
 import javax.security.auth.login.LoginException;
 import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
 
 public class Bot {
 
-    public static Map<Bot, Integer> botMap = new HashMap<>();
     public int id;
 
-    private static final CommandManager commandManager = new CommandManager();;
-    private ConfigManager configManager;
+    private static final CommandManager commandManager = new CommandManager();
+
     private final String token;
+    private Database database;
+    private JDA jda;
 
-    public Bot(String token) throws LoginException, InterruptedException {
-        this.id = generateId();
-        botMap.put(this, this.id);
-
+    public Bot(String token) {
         this.token = token;
-        initJDA();
-        initializeCommands();
+        setup();
     }
 
-    public void initializeCommands(){
+    public Bot(String token, Database database) {
+        this.token = token;
+        this.database = database.connect();
+        setup();
+    }
+
+    private void setup() {
+        this.id = Robo.generateId();
+        Robo.bots.add(this);
+
+        try {
+            initJDA();
+            initCommands();
+        } catch (LoginException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void initJDA() throws LoginException, InterruptedException {
+        jda = setupJDA().build();
+        jda.awaitReady();
+    }
+
+    public void initCommands() {
         registerCommands(
                 new Help(),
                 new Ping(),
@@ -50,24 +67,15 @@ public class Bot {
                 new Get()
         );
     }
-    
-    private void initJDA() throws LoginException, InterruptedException {
-        JDA bot = setupJDA().build();
-        bot.awaitReady();
-    }
 
-    private JDABuilder setupJDA(){
-        JDABuilder builder = JDABuilder.create(this.token == null ? System.getenv("RoboflaskToken") : this.token, getIntents());
+    private JDABuilder setupJDA() {
+        JDABuilder builder = JDABuilder.create(this.token == null ? System.getenv("RoboFlaskToken") : this.token, getIntents());
         builder.setActivity(Activity.watching("running on cd"));
         builder.addEventListeners(commandManager);
         return builder;
     }
 
-    private void setupDatabase(){
-
-    }
-
-    private EnumSet<GatewayIntent> getIntents(){
+    private EnumSet<GatewayIntent> getIntents() {
         return EnumSet.of(
                 GatewayIntent.GUILD_MEMBERS,
                 GatewayIntent.GUILD_MESSAGES,
@@ -79,27 +87,29 @@ public class Bot {
         );
     }
 
-    private void registerCommands(Command ... commands){
+    private void registerCommands(Command... commands) {
         for (Command cmd : commands) commandManager.addCommand(cmd);
     }
 
-    public static CommandManager getCommandManager(){
+    public static CommandManager getCommandManager() {
         return commandManager;
     }
 
-    private int generateId(){
-        //generate
-        int i = new Random().nextInt(10000000, 99999999);
-
-        //check availability
-        for (Bot bot : botMap.keySet()){
-            while (bot.id == i){
-                i = new Random().nextInt(10000000, 99999999);
-            }
-        }
-
-        return i;
+    //getters
+    public Database getDatabase() {
+        return this.database;
     }
 
+    public JDA getJDA() {
+        return this.jda;
+    }
 
+    public int getId() {
+        return this.id;
+    }
+
+    //setters
+    public void setDatabase(Database database) {
+        this.database = database;
+    }
 }

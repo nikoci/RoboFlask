@@ -1,11 +1,12 @@
 package com.devflask.roboflask.command.moderation;
 
-import com.devflask.roboflask.command.Command;
 import com.devflask.roboflask.command.CommandInformation;
+import com.devflask.roboflask.interfaces.Command;
 import net.dv8tion.jda.api.Permission;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
 
 public class Get implements Command {
 
