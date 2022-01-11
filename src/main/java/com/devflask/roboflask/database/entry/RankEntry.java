@@ -1,38 +1,42 @@
-package com.devflask.roboflask.database;
+package com.devflask.roboflask.database.entry;
 
+import com.devflask.roboflask.Robo;
+import com.devflask.roboflask.database.DatabaseManager;
 import com.devflask.roboflask.interfaces.Rank;
 import com.google.gson.Gson;
 import org.jetbrains.annotations.NotNull;
 
-public class DatabaseRank implements Rank {
+public class RankEntry implements Rank, Entry{
 
-    public int id;
-    public String guildId;
+    public String rankID;
+    public String guildID;
     public String name;
     public String description;
     public String icon;
     public int ladderPosition;
 
-    public DatabaseRank(@NotNull int id, @NotNull String guildId, String data) {
-        this.guildId = guildId;
-
-        //TODO: implement to parse data correctly
-        //new Gson().fromJson(data, this.getClass());
-        /*
+    public RankEntry(String rankID, String guildID, String name, String description, String icon, int ladderPosition) {
+        if (rankID == null) {
+            this.rankID = Robo.generateId()+"";
+        }else {
+            this.rankID = rankID;
+        }
+        this.guildID = guildID;
         this.name = name;
         this.description = description;
         this.icon = icon;
         this.ladderPosition = ladderPosition;
-         */
+
+        DatabaseManager.cache.put(EntryType.DatabaseRank, this);
     }
 
-    public int getId() {
-        return this.id;
+    public String getRankID() {
+        return this.rankID;
     }
 
     @Override
     public @NotNull String getGuildId() {
-        return this.guildId;
+        return this.guildID;
     }
 
     @Override

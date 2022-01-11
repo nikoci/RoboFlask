@@ -1,8 +1,8 @@
-package com.devflask.roboflask.database;
+package com.devflask.roboflask.database.entry;
 
 import net.dv8tion.jda.api.entities.Member;
 
-public class DatabaseProfile {
+public class ProfileEntry implements Entry{
 
     private final Member member;
 
@@ -20,7 +20,7 @@ public class DatabaseProfile {
 
     // private Reward[] rewards;
 
-    public DatabaseProfile(Member member, int level, int xp, int xpToNextLevel, int coins, int messages, String profileBanner, String profileBorder, int profileColor) {
+    public ProfileEntry(Member member, int level, int xp, int xpToNextLevel, int coins, int messages, String profileBanner, String profileBorder, int profileColor) {
         this.member = member;
         this.level = level;
         this.xp = xp;
